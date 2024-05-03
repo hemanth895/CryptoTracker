@@ -13,6 +13,11 @@ struct HomeView: View {
     @State private var showPortfolioView : Bool = false
     @EnvironmentObject private var vm : HomeViewModel
     
+    @State private var selectedCoin : CoinModel? = nil
+    @State private var showDetailView : Bool = false
+    
+    @State private var showSettingSheet : Bool = false
+    
     
     
     
@@ -62,8 +67,22 @@ struct HomeView: View {
                 
                 
             }
+            .sheet(isPresented: $showSettingSheet) {
+                SettingsView()
+            }
         }
+        .background(
+            
+            NavigationLink(
+                destination: DetailLoadingView(coin: $selectedCoin),
+                isActive: $showDetailView,
+                label: { EmptyView() }
+            )
+        )
     }
+       
+        
+    
 }
 
 struct HomeView_Previews: PreviewProvider {
@@ -91,6 +110,8 @@ extension HomeView{
                 .onTapGesture {
                     if showPortfolio{
                         showPortfolioView.toggle()
+                    }else{
+                        showSettingSheet.toggle()
                     }
                 }
                 .background(
@@ -122,8 +143,14 @@ extension HomeView{
             
             
             ForEach(vm.altCoins){ coin in
+                
+                
                 CoinRowView(coin:coin,showHoldingsColumn:false)
                     .listRowInsets(.init(top: 10, leading: 0, bottom: 10, trailing: 10))
+                    .onTapGesture {
+                        segue(coin: coin)
+                    }
+                
             }
         }
         .listStyle(PlainListStyle())
@@ -137,6 +164,9 @@ extension HomeView{
             ForEach(vm.portfolioCoins){ coin in
                 CoinRowView(coin:DeveloperPreview.instance.coin,showHoldingsColumn:true)
                     .listRowInsets(.init(top: 10, leading: 0, bottom: 10, trailing: 10))
+                    .onTapGesture {
+                        segue(coin: coin)
+                    }
             }
         }
         .listStyle(PlainListStyle())
@@ -219,5 +249,10 @@ extension HomeView{
         .font(.caption)
         .foregroundColor(Color.theme.SecondaryText)
         .padding(.horizontal)
+    }
+    
+    private func segue(coin:CoinModel){
+        selectedCoin = coin
+        showDetailView.toggle()
     }
 }

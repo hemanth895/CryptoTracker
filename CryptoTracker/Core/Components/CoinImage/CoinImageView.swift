@@ -7,16 +7,9 @@
 
 import SwiftUI
 
-
-
-
 struct CoinImageView: View {
     
-  
-    
     @StateObject var vm : CoinImageViewModel
-    
-    
     
     init(coin:CoinModel){
         _vm = StateObject(wrappedValue: CoinImageViewModel(coin: coin))
@@ -34,7 +27,7 @@ struct CoinImageView: View {
             }else if vm.isLoading{
                 ProgressView()
             }else{
-                Image(systemName: "questionmark")
+                Image(systemName : "questionmark")
                     .foregroundColor(Color.theme.SecondaryText)
             }
         }
