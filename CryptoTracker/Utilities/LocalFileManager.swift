@@ -17,13 +17,7 @@ class LocalFileManager {
     
     func saveImage(image:UIImage,imageName:String,folderName:String){
         
-        
-        
         createFolderIfNeeded(folderName: folderName)
-        
-        
-        
-        
         
         guard let data = image.pngData(),
         let url = getURLForImage(imageName: imageName, folderName: folderName)

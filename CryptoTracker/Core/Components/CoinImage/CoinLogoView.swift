@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct CoinLogoView: View {
-    let coin :CoinModel
+    let coin: CoinModel
     
     var body: some View {
         VStack{
@@ -35,9 +35,6 @@ struct CoinLogoView_Previews: PreviewProvider {
     static var previews: some View {
         
         Group{
-            
-            
-            
             CoinLogoView(coin: dev.coin)
                 .previewLayout(.sizeThatFits)
                 .preferredColorScheme(.dark)

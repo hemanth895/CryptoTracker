@@ -15,22 +15,15 @@ struct SettingsView: View {
     let coinGekoUrl = URL(string: "https://www.coingecko.com")!
     let personnalUrl = URL(string: "https://www.coingecko.com")!
 
-    
-    
-    
     var body: some View {
 
         NavigationView {
-            
             List {
-            
                 swiftfulthinkingSection
                 coinGeckoSection
                 developerSection
                 applicationSection
             }
-
-
         }
         .listStyle(GroupedListStyle())
         .navigationTitle("Settings")
@@ -94,8 +87,6 @@ extension SettingsView{
             .padding(.vertical)
             
             Link("visit coingecko  😒" ,destination: coinGekoUrl)
-            
-            
             
         }
     }

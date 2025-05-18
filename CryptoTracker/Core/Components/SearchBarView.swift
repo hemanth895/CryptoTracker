@@ -8,11 +8,7 @@
 import SwiftUI
 
 struct SearchBarView: View {
-    
-    
-    
-    
-    
+
     @Binding var searchText:String
     
     var body: some View {
@@ -59,8 +55,6 @@ struct SearchBarView: View {
 
 struct SearchBarView_Previews: PreviewProvider {
     static var previews: some View {
-        
-        
         Group{
             SearchBarView(searchText: .constant(""))
                 .previewLayout(.sizeThatFits)

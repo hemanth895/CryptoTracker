@@ -47,10 +47,10 @@ class HomeViewModel:ObservableObject{
     
     
     func addSubcribers(){
-//        dataService.$altcoin.sink { [weak self](coins) in
-//            self?.altCoins = coins
-//        }
-//        .store(in: &cancellables)
+        dataService.$altcoin.sink { [weak self](coins) in
+            self?.altCoins = coins
+        }
+        .store(in: &cancellables)
         
         $searchText
             .combineLatest(dataService.$altcoin,$sortOption)
@@ -69,7 +69,6 @@ class HomeViewModel:ObservableObject{
         
         //updates the portfolio data
 
-        
         $altCoins
             .combineLatest(portfolioDataService.$savedEntities)
             .map(mapAllCoinsToPortfolioCoins)
@@ -91,10 +90,6 @@ class HomeViewModel:ObservableObject{
             }
             .store(in: &cancellables)
         
-        
-        
-       
-           
     }
     
     
@@ -128,42 +123,26 @@ class HomeViewModel:ObservableObject{
     private func mapGlobalMarketData(marketData:MarketDataModel?,portfolioCoins:[CoinModel]) -> [StatisticModel]{
         var stats : [StatisticModel] = []
         
-        
         guard let data = marketData else{
             return stats
         }
         
         let marketCap = StatisticModel(title: "Market Cap", value: data.marketCap,percentageChange: data.marketCapChangePercentage24HUsd)
         
-        
         let volume = StatisticModel(title: "24h Volume", value: data.volume)
         
         let BtcDominance = StatisticModel(title: "BTC Dominance", value: data.btcDominance)
         
-        
-        
-        
-        
-//        let portfolioValue = portfolioCoins.map { (coin) -> Double in
-//            return coin.currentHoldingsValue
-//        }
-        
-        
         let portfolioValue = portfolioCoins
             .map({$0.currentHoldingsValue})
             .reduce(0, +)
-        
-        
-        
+    
         let prevousValue = portfolioCoins
             .map { (coin) -> Double in
                 let currentValue = coin.currentHoldingsValue
                 let percentChange = (coin.priceChangePercentage24H ?? 0) / 100
                 let prevousvalue = currentValue / (1+percentChange)
                 return prevousvalue
-                
-                
-                //
             }
             .reduce(0, +)
         
@@ -188,18 +167,15 @@ class HomeViewModel:ObservableObject{
         allcoins
             .compactMap { (coin) -> CoinModel? in
                 guard let entity = portfolioEntities.first(where: {$0.coinID == coin.id})else{return nil}
-                
                 return coin.updateHoldings(amount: entity.amount)
             }
     }
     
     
     func reloadData(){
-        
         isLoading = true
         dataService.getCoins()
         marketDataService.getCoins()
-        
         HapticsManager.notification(type: .success)
     }
     
@@ -208,11 +184,8 @@ class HomeViewModel:ObservableObject{
         
         switch sort{
         case .rank ,.holdings:
-          
-            
             coins.sort(by: {$0.rank > $1.rank})
 
-            
         case .rankReversed ,.holdingsReversed:
              coins.sort(by: {$0.rank > $1.rank})
             
@@ -221,21 +194,14 @@ class HomeViewModel:ObservableObject{
 
         case .priceReversed:
              coins.sort(by: {$0.currentPrice > $1.currentPrice})
-            
-            
-
         }
-        
-        
     }
     
     
     private func sortPortfolioCoinsIfNeeded(coins:[CoinModel])->[CoinModel]{
         switch sortOption{
         case .holdings:
-            
             return coins.sorted(by: { $0.currentHoldingsValue > $1.currentHoldingsValue })
-            
             
         case .holdingsReversed:
             return coins.sorted(by: { $0.currentHoldingsValue < $1.currentHoldingsValue })
@@ -245,6 +211,4 @@ class HomeViewModel:ObservableObject{
 
         }
     }
-    
-   
 }

@@ -18,43 +18,27 @@ struct HomeView: View {
     
     @State private var showSettingSheet : Bool = false
     
-    
-    
-    
     var body: some View {
         ZStack{
             
-            //background
             Color.theme.background
                 .ignoresSafeArea()
                 .sheet(isPresented: $showPortfolioView) {
-               
                     PortfolioView()
                         .environmentObject(vm)
                 }
                 
-            
-            
-            //content
             VStack{
                 
-                
-               homeHeader
-                
+                homeHeader
                 HomeStatsView(showPortfolio: $showPortfolio)
-                
                 SearchBarView(searchText: $vm.searchText)
-                
-               columnTitles
+                columnTitles
                
-                
-                
                 if !showPortfolio{
-                    
                   allCoinsList
                     .transition(.move(edge: .leading))
                 }
-                
                 
                 if showPortfolio{
                     portfolioCoinsList
@@ -64,15 +48,12 @@ struct HomeView: View {
                 
                 Spacer(minLength: 0)
                 
-                
-                
             }
             .sheet(isPresented: $showSettingSheet) {
                 SettingsView()
             }
         }
         .background(
-            
             NavigationLink(
                 destination: DetailLoadingView(coin: $selectedCoin),
                 isActive: $showDetailView,
@@ -80,14 +61,11 @@ struct HomeView: View {
             )
         )
     }
-       
-        
-    
 }
 
 struct HomeView_Previews: PreviewProvider {
     static var previews: some View {
-        
+
         NavigationView{
             HomeView()
                 .navigationBarHidden(true)
@@ -97,12 +75,7 @@ struct HomeView_Previews: PreviewProvider {
     }
 }
 
-
-
-
 extension HomeView{
-    
-    
     private var homeHeader:some View{
         HStack{
             CircleButtonView(iconName: showPortfolio ? "plus" :  "info")
@@ -140,11 +113,7 @@ extension HomeView{
     
     private var allCoinsList :some View{
         List{
-            
-            
             ForEach(vm.altCoins){ coin in
-                
-                
                 CoinRowView(coin:coin,showHoldingsColumn:false)
                     .listRowInsets(.init(top: 10, leading: 0, bottom: 10, trailing: 10))
                     .onTapGesture {
@@ -160,7 +129,7 @@ extension HomeView{
     private var portfolioCoinsList :some View{
         List{
             
-            
+
             ForEach(vm.portfolioCoins){ coin in
                 CoinRowView(coin:DeveloperPreview.instance.coin,showHoldingsColumn:true)
                     .listRowInsets(.init(top: 10, leading: 0, bottom: 10, trailing: 10))
@@ -174,7 +143,7 @@ extension HomeView{
     
     private var columnTitles : some View{
         HStack{
-            
+
             HStack(spacing: 4) {
                 Text("Coin")
                 Image(systemName: "chevron.down")
@@ -183,17 +152,11 @@ extension HomeView{
 
             }
             .onTapGesture {
-                
                 withAnimation(.default) {
                     vm.sortOption = vm.sortOption == .rank ? .rankReversed : .rank
 
                 }
                 
-//                if vm.sortOption == .rank{
-//                    vm.sortOption = .rankReversed
-//                }else{
-//                    vm.sortOption = .rank
-//                }
             }
             
             Spacer()
@@ -209,12 +172,9 @@ extension HomeView{
 
                 }
                 .onTapGesture {
-                    
                     withAnimation(.default) {
                         vm.sortOption = vm.sortOption == .holdings ? .holdingsReversed : .holdings
-
                     }
-   
                 }
             }
             

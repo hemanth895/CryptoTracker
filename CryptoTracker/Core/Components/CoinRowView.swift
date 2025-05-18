@@ -11,13 +11,11 @@ struct CoinRowView: View {
     
     let coin:CoinModel
     
-    let showHoldingsColumn:Bool
+    let showHoldingsColumn: Bool
     
     var body: some View {
         
-
         HStack(spacing: 0){
-            
            leftColumnn
             
             Spacer()

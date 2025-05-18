@@ -29,9 +29,7 @@ struct PortfolioView: View {
                     
                    coinLogoList
                     
-                    if selectedCoin  != nil{
-                       
-                        
+                    if selectedCoin  != nil {
                         portfolioInputSection
                     }
 
